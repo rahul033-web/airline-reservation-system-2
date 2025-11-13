@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Flights</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Available Flights</h1>
+
+    <div class="flight-card">
+      <h3>Flight: Air India AI203</h3>
+      <p>From: Delhi ✈ To: Mumbai</p>
+      <p>Departure: 10:30 AM | Arrival: 12:45 PM</p>
+      <p>Price: ₹5,499</p>
+      <button class="btn" onclick="openPopup('Air India AI203')">Book Now</button>
+    </div>
+
+    <div class="flight-card">
+      <h3>Flight: Indigo 6E150</h3>
+      <p>From: Bangalore ✈ To: Goa</p>
+      <p>Departure: 2:00 PM | Arrival: 3:15 PM</p>
+      <p>Price: 5,000₹</p>
+      <button class="btn" onclick="openPopup('Indigo 6E150')">Book Now</button>
+    </div>
+
+    <div class="flight-card">
+      <h3>Flight: Vistara UK870</h3>
+      <p>From: Kolkata ✈ To: Delhi</p>
+      <p>Departure: 7:15 AM | Arrival: 9:45 AM</p>
+      <p>Price: ₹6,199</p>
+      <button class="btn" onclick="openPopup('Vistara UK870')">Book Now</button>
+    </div>
+
+    <a href="home.html" class="btn">Back to Home</a>
+  </div>
+
+  <!-- Booking Popup -->
+  <div id="bookingPopup" class="popup">
+    <div class="popup-content">
+      <h3 id="popupTitle">Book Flight</h3>
+      <input type="text" id="name" placeholder="Enter your name" required>
+      <input type="email" id="email" placeholder="Enter your email" required>
+      <input type="number" id="passengers" placeholder="Number of passengers" required>
+      <button class="btn" onclick="bookFlight()">Confirm Booking</button>
+      <button class="close-btn" onclick="closePopup()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedFlight = "";
+
+    function openPopup(flightName) {
+      selectedFlight = flightName;
+      document.getElementById("popupTitle").textContent = "Book " + flightName;
+      document.getElementById("bookingPopup").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("bookingPopup").style.display = "none";
+    }
+
+    function bookFlight() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const passengers = document.getElementById("passengers").value;
+
+      if (!name || !email || !passengers) {
+        alert("Please fill in all details.");
+        return;
+      }
+
+      const booking = {
+        flight: selectedFlight,
+        name,
+        email,
+        passengers,
+        date: new Date().toLocaleString()
+      };
+
+      // Save to localStorage
+      let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+      bookings.push(booking);
+      localStorage.setItem("bookings", JSON.stringify(bookings));
+
+      alert("🎉 Booking confirmed for " + selectedFlight + "!");
+      closePopup();
+    }
+  </script>
+</body>
+</html>
