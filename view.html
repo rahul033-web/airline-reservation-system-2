@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booked Flights</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Your Booked Flights</h1>
+    <div id="bookedList"></div>
+    <a href="home.html" class="btn">Back to Home</a>
+  </div>
+
+  <script>
+    function loadBookings() {
+      const listDiv = document.getElementById("bookedList");
+      const bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+
+      if (bookings.length === 0) {
+        listDiv.innerHTML = "<p>No flights booked yet.</p>";
+        return;
+      }
+
+      listDiv.innerHTML = bookings.map((b, index) => `
+        <div class="booked-card">
+          <h3>${b.flight}</h3>
+          <p><strong>Name:</strong> ${b.name}</p>
+          <p><strong>Email:</strong> ${b.email}</p>
+          <p><strong>Passengers:</strong> ${b.passengers}</p>
+          <p><strong>Date:</strong> ${b.date}</p>
+          <button class="remove-btn" onclick="removeBooking(${index})">Remove Booking</button>
+        </div>
+      `).join("");
+    }
+
+    function removeBooking(index) {
+      let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+      bookings.splice(index, 1);
+      localStorage.setItem("bookings", JSON.stringify(bookings));
+      loadBookings();
+    }
+
+    window.onload = loadBookings;
+  </script>
+</body>
+</html>
